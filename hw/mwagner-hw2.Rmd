@@ -1,0 +1,64 @@
+---
+title: "Homework 2"
+author: "Max Wagner"
+date: "February 14, 2015"
+header-includes:
+   - \usepackage{bbm}
+output:
+  pdf_document: default
+  html_document:
+    highlight: espresso
+    theme: flatly
+  word_document: default
+---
+***
+
+####12.
+
+The main problem you would want to look at here is when the breakeven point for buying a new truck is. The maintenance costs at some point will no longer be worth the how much the truck is worth. 
+
+variables: milage on the trucks, age of the trucks, maintenance cost, new truck cost, weather the trucks drive in, how much the trucks are used, what the trucks are used for
+
+The idea behind this is to collect data on the average truck life expectancy, and how much it cost during its lifetime to repair it to working shape. Compare the cost of a new truck to this figure. The other variables such as weather, how much they are used (how hard) all tend to affect the maintenance cost variable.
+
+####11.
+
+$$ y = kx^{3} $$
+```{r}
+x1 <- c(1:10)
+y1 <- c(0,1,2,6,14,24,37,58,82,114)
+k <- y1 / x1^3;k
+```
+
+k changes throughout the proportion, so the set does not support the model
+
+####4.
+
+Part i assumes that all height is the same, which gives a generic model of
+
+$$ x^{3} = y $$
+
+```{r}
+x <- c(17,19,20,23,25,28,32,38,39,41)
+y <- c(19,25,32,57,71,113,123,252,259,294)
+k <- y/x^3
+avgK <- mean(k)
+```
+
+The average k value of `r round(avgK,4)` gives a formula of:
+
+$$ `r round(avgK,4)`x^{3} = y $$
+
+Part ii assumes that height can change proportionally to the diameter, which gives a general formula of:
+
+$$ x^{2}h = y $$
+
+Adding a height variables should make the model more accurate, but without height values to find the k value, I cannot be certain. Two trees that are the same diameter at the base, but differ in height would have drastically different board feet. However, most trees that are similar in diameter, are typically similar hieght, as long as the species remains the same.
+
+####3.
+
+The single largest factor ignored is any acceleration or decceleration. The model assumes a constant speed, which is not realistic for daily driving. It also ignores any weather effects such as a humid day, rain, or snow. This could affect both friction and engine performance.
+
+####2.
+
+If we think about the body as a tube, then we need a few measurements involving circumference (ie waist, shoulder, etc) and also height. If all participants are of equal body fat percentage, then there should be a general ratio that emerges when taking the volume of their bodies. If body fat remains the same, then d = m/v should give roughly the same answer for all participants.

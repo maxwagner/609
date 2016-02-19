@@ -1,0 +1,120 @@
+---
+title: "Homework 1"
+author: "Max Wagner"
+date: "February 7, 2015"
+output:
+  word_document: default
+  pdf_document: default
+  html_document:
+    highlight: espresso
+    theme: flatly
+---
+***
+
+####10.
+
+a0 = 50,000
+an+1 = 0.01 * an - 1000
+
+solving in R:
+
+```{r}
+i = 50000
+n = 0
+while (i > 1000) {
+  i = (i * 1.01) - 1000
+  n = n + 1
+}
+```
+
+On month `r n`, they will be left with `r round(i, 2)` dollars
+
+####9.
+
+Solving in R:
+
+```{r}
+n <- c(1:16)
+an <- c(3,6,11,21,32,47,65,87,112,140,171,204,241,282,325,376)
+delta <- c(diff(an), NA)
+plot(n, delta)
+```
+
+The graph appears to be mostly linear, with a little variation. The slope is roughly 3, which gives a rough equation of:
+
+`delta_an = 3an`
+
+```{r}
+approx <- c(1:16) * 3
+diff <- c(delta[1:15] - approx[1:15], NA)
+plot(n, diff)
+```
+
+The differences are typically from 1 to -1, with an outlier at n = 15, where the difference is 6. The model fits reasonably for the purposes of this assignment.
+
+####13.
+
+```{r}
+k <- .001
+r <- 4
+n <- 0
+while (r < 999) {
+  r <- r + ((k * r) * (1000 - r))
+  n <- n + 1
+  print(c(n,r))
+}
+```
+
+The table above shows that it would take 11 periods for all 1000 people to hear the rumor.
+
+####6.
+
+a. The underlying idea of the models is that at a price of 100, and a quantity of 500, neither value will change. When price is above 100, quantity will increase by the growth factor 0.2, when quanity is above 500, price will decrease by a growth factor of -0.1. Typically when price increases, quantity decreases, so the first part is a bit odd. But the equilibrium point of the price of 100, and quantity of 500 remains the same regardless.
+
+Case A:
+
+```{r}
+p <- 110
+q <- 500
+for (i in 1:10) {
+  p <- p - .1 * (q - 500)
+  q <- q + .2 * (p - 100)
+  print(c(p, q))
+}
+```
+
+Case B:
+
+```{r}
+p <- 200
+q <- 500
+for (i in 1:10) {
+  p <- p - .1 * (q - 500)
+  q <- q + .2 * (p - 100)
+  print(c(p, q))
+}
+```
+
+Case C:
+
+```{r}
+p <- 100
+q <- 600
+for (i in 1:10) {
+  p <- p - .1 * (q - 500)
+  q <- q + .2 * (p - 100)
+  print(c(p, q))
+}
+```
+
+Case D:
+
+```{r}
+p <- 100
+q <- 400
+for (i in 1:10) {
+  p <- p - .1 * (q - 500)
+  q <- q + .2 * (p - 100)
+  print(c(p, q))
+}
+```
