@@ -1,0 +1,123 @@
+---
+title: "Homework 4"
+author: "Max Wagner"
+date: "February 25, 2015"
+header-includes:
+   - \usepackage{bbm}
+output:
+  pdf_document: default
+  html_document:
+    highlight: espresso
+    theme: flatly
+  word_document: default
+---
+***
+
+####3.
+
+.
+
+```{r}
+y.monte <- runif(100000, 0, 1)
+x.monte <- runif(100000, 0, 1)
+monte <- x.monte^2 + y.monte^2 <= 1
+area.monte <- (length(monte[monte]) / length(monte)) * 4
+area.monte
+```
+
+####1.
+
+a.
+
+```{r}
+x0 <- 1009^2
+x1 <- 180^2
+x2 <- 324^2
+x3 <- 1049^2
+x4 <- 1004^2
+x5 <- 80^2
+x6 <- 64^2
+x7 <- 40^2
+x8 <- 16^2
+x9 <- 2^2
+c(1009,180,324,1049,1004,80,64,40,16,2)
+```
+
+b. is not a 4 digit seed
+
+c. We can see below that the middle-square puts itself in a loop from 6100,2100,4100,8100, then back to 6100.
+
+```{r}
+x0 <- 3043^2
+x1 <- 2598^2
+x2 <- 7496^2
+x3 <- 1900^2
+x4 <- 6100^2
+x5 <- 2100^2
+x6 <- 4100^2
+x7 <- 8100^2
+x8 <- 6100^2
+x9 <- 2100^2
+x10 <- 4100^2
+x11 <- 8100^2
+x12 <- 6100^2
+x13 <- 2100^2
+x14 <- 4100^2
+```
+
+d. There was cycling in (d), and (a) degenerated to 0 fairly quickly.
+
+####4
+
+.
+
+```{r}
+odds <- c(1/7,1/5,1/9,1/12,1/4,1/35,1/15,1/4)
+sum(odds)
+```
+
+The sum is higher than 1, so let's adjust for 1.
+
+```{r}
+odds <- odds / sum(odds)
+```
+
+Let's make a cumulative probabilty list, and race them 1000 times. The histogram is backwards, 8 is euler, 1 is dancin.
+
+```{r}
+euler <- odds[1]
+leapin <- sum(odds[1:2])
+newton <- sum(odds[1:3])
+count <- sum(odds[1:4])
+pumped <- sum(odds[1:5])
+loping <- sum(odds[1:6])
+steamin <- sum(odds[1:7])
+dancin <- sum(odds[1:8])
+cumodds <- c(euler,leapin,newton,count,pumped,loping,steamin,dancin)
+
+races <- runif(1000, 0, 1)
+winners <- c()
+for (i in races) {
+  winners <- c(winners, sum(i < cumodds))
+}
+hist(winners, breaks=8)
+```
+
+####3 The simulation runs with lag time 2 being position 6, and lag time 7 being position 1.
+
+```{r}
+lag2 <- 10/100
+lag3 <- lag2 + 25/100
+lag4 <- lag3 + 30/100
+lag5 <- lag4 + 20/100
+lag6 <- lag5 + 13/100
+lag7 <- lag6 + 2/100
+cumodds <- c(lag2,lag3,lag4,lag5,lag6,lag7)
+
+trials <- runif(1000, 0, 1)
+lags <- c()
+for (i in trials) {
+  lags <- c(lags, sum(i < cumodds))
+}
+hist(lags, breaks=6)
+```
