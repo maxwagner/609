@@ -1,0 +1,106 @@
+---
+title: "Homework 10"
+author: "Max Wagner"
+date: "April 4, 2016"
+header-includes:
+   - \usepackage{bbm}
+output:
+  pdf_document: default
+  html_document:
+    highlight: espresso
+    theme: flatly
+  word_document: default
+---
+***
+
+##469.3
+
+a.
+
+```{r}
+library(ggplot2)
+t <- c(1814, 1824, 1834, 1844, 1854, 1864)
+p <- c(125, 275, 830, 1200, 1750, 1650)
+qplot(x = t, y = p, geom = "line")
+```
+
+The above graph shows a dip at 1864, however it's not certain the cap has been met. We can estimate around 1850 for a max population.
+
+b.
+
+```{r}
+M <- 1850
+eq <- log(p / (M - p))
+qplot(x = t, y = eq, geom = "point") + stat_smooth(method = "lm") # to get rid the decrease in 1864
+rm <- lm(eq ~ t)$coefficients[[2]];rm
+t_star <- -(1 / rm) * log(p[1] / (M - p[1])) + t[1]
+```
+
+##478.6
+
+The idea behind the model is that something is being added, and decays at a certain rate, and must remain within a certain range. I build computers, and one important aspect is picking the right power source for the parts in it. Too little power, and the computer won't run, too much power and the system can become unstable. Each piece of equipment "decays" the power, with the power supply contantly applying more.
+
+##481.1
+
+a. First we need to put it into units we can use, then we can solve.
+
+```{r}
+d <- .054 * 12960000 * (1/27878400);d
+```
+
+$$ d_b = 0.025v^2 = \frac{v^2}{2k} $$
+$$ 0.025 = \frac{1}{2k} $$
+
+```{r}
+k <- 1 / (2*d);k
+```
+
+##522.21
+
+Can get the following formula from the problem:
+
+$$ \frac{dp}{dt} + \frac{pr_{out}}{v_t} = r_{in}c_{in} $$
+
+${v_t}$, $r_{out}$ and $r_{in} = 1L$, and $c_{in} = 100$%
+
+$$ \frac{dp}{dt} + p = 100 $$
+
+Coeff of the contant gives:
+
+$$ p(t) = 100 + \frac{c}{e^t} $$
+
+Plugging in $21 = 100 + c$
+
+$$ p(t) = 100 - \frac{79}{e^t} $$
+
+Pluggin in 5L of oxy:
+
+$$ p(5) = 100 - \frac{79}{e^5} = 99.4677 $$
+
+##522.22
+
+$$ \frac{dp}{dt} + \frac{pr_{out}}{v_0 + (r_{in} - r_{out})^t} = r_{in}c_{in} $$
+
+$$ r_{in} = 1000 + ((100*20*30) / (12*12*12)) = 1034.7222 $$ 
+
+$$ r_{out} = 34.72222 $$
+
+$$ v_0 = 10000 $$
+
+$$ r_{in}c_{in} = 1000*.04 + ((100*20*30) / (12*12*12)) * 4 = 178.8889 $$
+
+Which then gives:
+
+$$ \frac{dp}{dt} + \frac{p*34.72222}{10000} = 178.8889 $$
+
+and:
+
+$$ p(t) = 51523.2 + \frac{c}{e^.003472t} $$
+
+Plugging in $c = -51523.16$
+
+$$ p(60) = 51523.2 - \frac{51523.16}{e^{.003472*60}} = 9689.116 $$
+
+which means the $CO_2$ percentage is `r 100 - 96.89`%
+
+

@@ -1,0 +1,153 @@
+---
+title: "609 Final"
+author: "Max Wagner"
+date: "May 10, 2016"
+header-includes:
+   - \usepackage{bbm}
+output:
+  pdf_document: default
+  html_document:
+    highlight: espresso
+    theme: flatly
+  word_document: default
+---
+
+##Project One
+
+Consider an endurance test that measures only aerobic fitness. This test could be a swimming test, running test, or bike test. Assume that we want all competitors to do an equal amount of work. Build a mathematical model that relates work done by the competitor to some measureable characteristic, such as height or weight. Next consider a refinement using kinetic energy in your model. Collect some data for one these aerobic tests and determine the reasonableness of these models.
+
+
+***
+
+The first step to this problem is understanding what the question is asking. The basic definition of work is $Work = Force x Distance$, and the definition of force is $Force = Mass x Acceleration$. If I relate this to running, it means that the athlete is exerting force in order to run a certain distance. Distance can be easily manipulated in this case, while force is the variable we need to compute. Work will be the result of these two, and in this case should be even for all athletes. In order to do this, I will relate force to some physical aspects of the athlete, namely height, weight, and waist size. 
+
+First we can look at a crude example of what will follow. If I want to know the work needed to move a car that weighs 1000kg for 100m, I can do the following:
+
+$$ 1 N = 1 kg m/s^2 $$
+$$ 1000kg = 9806 N $$
+$$ Work = 9806 N * 100 m = 980600 J$$
+
+The second step to the problem is then relating kinetic energy to the model. The definition is $K.E. = .5mv^2$ where m is mass, and v is velocity. In this case if want to find the kinetic energy as the same car from above, we will need to know the velocity at which it is moving. If I assume the car will move at 55mph, I can do the following:
+
+$$ 55mph = 24.6 m/s $$
+$$ KE = .5(1000)(24.6)^2 = 302580 J $$
+
+The idea of modeling based on geometric similarity is important for the problem as we are relating different people's height, weight, and waist size to the amount of work in Joules they output. In order to get a general idea of body shape, mass, and density I will assume the following:
+
+$$ Mass(kg) = \frac{Weight(lbs)}{2.20462} $$
+$$ Meters = Inches * 39.37 $$
+$$ Radius(m) = \frac{circ(m)}{2\pi} $$
+$$ Volume(m^3) = \pi r^2 h(meters) $$
+$$ Density = Mass(kg) / Volume $$
+$$ Force = Mass(kg) * Accel(m/s) $$
+$$ Work = Force * Distance $$
+
+If we do some plugging in we can get the following, which only accounts for weight:
+
+$$ Work = (\frac{Weight(lbs)*9.81}{2.20462}) * Distance(m) $$
+
+If the work of two athletes needs to be equal, two equations can be set equal to each other, where weight will be the weight of each athlete, and distance will need to be solved for.
+
+$$ (\frac{Weight(lbs)*9.81}{2.20462}) * Distance(m) = (\frac{Weight(lbs)*9.81}{2.20462}) * Distance(m) $$
+
+We can now test for some data from a local running club with a distance of 100 meters to make sure the relationship is linear.
+
+```{r}
+library(ggplot2)
+runners <- read.csv("runners.csv", header = TRUE)
+runners$work100 <- ((runners$weight * 9.81) / 2.20462) * 100
+qplot(runners$weight, runners$work100, geom = "smooth", xlab = "Weight(lbs)", ylab = "Work(Joules)", main = "Work Required to Run 100m")
+```
+
+The graph above appears to show a linear relationship between work and weight, which is what I expected. The next step is to standardize the amound of work the athletes should do by altering the distance they run. Let's say we want the athlete to do 1,000,000 J of work:
+
+$$ distance = \frac{2.20462work}{9.81weight} $$
+
+```{r}
+runners$mj <- (2.20462*1000000) / (9.81*runners$weight)
+qplot(runners$mj, runners$weight, geom = "smooth", main = "Distance Needed For 1million Joules", xlab = "Distance(Meters)", ylab = "Weight(lbs)")
+```
+
+The difference in distances is actually much larger than what I would have anticipated. For reference, 1600m is a typical event in track and what this is showing is that for even a small weight difference of 145lbs vs 135lbs, the larger runners is effectively putting in 100m of extra effort. For reference, a 200 pound runner would only take 1123m meters to put in the same amount of work, putting him 577m meters behind the lightest runner from the sample.
+
+***
+
+If the kinetic energy approach is taken, we can refer back to the $K.E. = .5mv^2$ equation from above. In this case, instead of adjusting for distance, velocity of runner will be manipulated. We can first take a look at how much kinetic energy is produced by each runner running at 10mph:
+
+```{r}
+runners$ke10 <- .5*(9.81*runners$weight)*4.4704^2
+qplot(runners$weight, runners$ke10, main = "KE to Run at 10mph", xlab = "Weight(lbs)", ylab = "KE(J)", geom = "smooth")
+```
+
+As seen above this is again a linear relationship between weight and Joules needed to run at the 10mph pace. Now we can set a KE constant of 13000J and determine the speed each runner would need in order to maintain it.
+
+```{r}
+runners$velocity <- sqrt(13000/(4.905*runners$weight)) / .44704
+qplot(runners$velocity, runners$weight, main = "Velocity Based on Weight", xlab = "Velocity(mph)", ylab = "Weight(lbs)", geom = "smooth")
+```
+
+Similar to above, again there is a linear relationship between weight and velocity needed. The difference in this equivalency test is that we are purely accounting for velocity, which means that regardless of distance run, the relative Joules of effort by the runners will remain the same. The defining idea behind this is that all runners must run for the same amount of time.
+
+##Project Two
+
+***
+
+Should US citizens build their own retirement through 401Ks or use the current Social Security program? Build models to be able to compare these systems and provide decisions that can help someone to plan a better retirement.
+
+The problem boils down to be about at which age you should retire in order to maximize your benefit from both aspects. Social Security has a "full retirement" age which is currently 67. This age is when you can recieve your full benefits without any reduction. There is also a increase in benefits if you wait past the full retirement age, however this only applies until you are 70, at which time the increase stop. The current reduction in monthly payments for retiring early or late are:
+
+```{r}
+ages <- c(62:70)
+modifiers <- c(.7,.75,.8,.867,.933,1,1.08,1.16,1.24)
+ss <- data.frame(cbind(ages, modifiers));ss
+```
+
+It would seem that it would make sense to retire at the maximum age of 70, however, life expectancy must be taken into account. The average person in the US lives to be 79, which means they can on average collect social security for 9 years. This gap can change based on when you begin to collect. If you were to collect starting at 62, you would recieve only 70% of potential, but you could collect for many more years.
+
+For simplicity let's assume a retiree would make $1000 a month if they wait until age 67 to retire. We can now compare that to the above and see how much they can expect at each age:
+
+```{r}
+ss$monthly <- 1000*ss$modifiers;ss
+```
+
+And now we can add in life expectancy to the mix. If we assume every person will die at the age of 79, we get the following:
+
+```{r}
+ss$yearly <- ss$monthly*12
+ss$year_remaining <- 79-ss$ages
+ss$total <- ss$yearly*ss$year_remaining;ss
+qplot(ss$ages, ss$total, main = "Retirement Total for $1000, Living to 79", geom = "line")
+```
+
+Interestingly the ideal age in this case is 65, two years younger than 67. Although the modifier is lower, it is sill a better option if living until 79. If we extend the life period of someone to 85, we can get the following.
+
+```{r}
+ss$monthly <- 1000*ss$modifiers
+ss$yearly <- ss$monthly*12
+ss$year_remaining <- 85-ss$ages
+ss$total <- ss$yearly*ss$year_remaining;ss
+qplot(ss$ages, ss$total, main = "Retirement Total for $1000, Living to 85", geom = "line")
+```
+
+In this case the "full retirement" age of 67 is much more of a goal than before, with 68-70 being ideal ages to retire. The drawback in this scenario is that you are not guarenteed to be able to collect it all. This is where we can begin to compare ages and what you true best choice would be.
+
+```{r}
+ages <- c(rep(62:70,each=5))
+modifiers <- c(rep(c(.7,.75,.8,.867,.933,1,1.08,1.16,1.24),each=5))
+death <- rep(c(70,75,80,85,90), 9)
+death_chance <- rep(c(.92,.80,.63,.41,.2), 9)
+ss2 <- data.frame(cbind(ages,modifiers,death,death_chance))
+ss2$monthly <- 1000*ss2$modifiers
+ss2$yearly <- ss2$monthly*12
+ss2$remaining <- ss2$death-ss2$ages
+ss2$total <- ss2$yearly*ss2$remaining;ss2
+
+library(plyr)
+ddply(ss2, ~ages, summarise, mean=mean(total))
+```
+
+If the percentages and math is correct, this means that retiring in the range of 65 to 68 is ideal, with 66 being the best year to do so. It should be taken into consideration that the lowest option of age 70, is only $8,000 less than the best option, and age 62 is only $5,000 less than the best option. The table does also not take into account that people can live beyond the age of 90, and die earlier than 70. Additionally, the $1000 montly income is slightly lower than the $1100 national average. If this monthly income were to increase to something like $2000, the ratios would be the same, but retiring in the wrong year would mean a larger loss in potential earnings.
+
+Moving onto the 401(k) aspect of the problem, there is a much more straight forward path to take, without any probabilities involved. The general idea is to begin saving and using a 401(k) as early as possible, and hopefull maintain an employer that will match the amount you put in. An employer that does this will effectively double any money you place into the account. 
+
+The problem gives the impression that a person must choose between Social Security or 401(k) plans, and this is not the case. A smart choice if you desire to retire earlier than the above social security model recommends is to supplement the Social Security income with 401(k) withdrawls. 

@@ -1,0 +1,18 @@
+---
+title: "Homework 14"
+author: "Max Wagner"
+date: "May 8, 2016"
+header-includes:
+   - \usepackage{bbm}
+output:
+  pdf_document: default
+  html_document:
+    highlight: espresso
+    theme: flatly
+  word_document: default
+---
+***
+
+I decided to do this by hand. I stopped after 1 round for most of the nodes because they were below .45. I continued on for CD but either option gave a value below 45%. The highest I found was CDBA which gave 40.46%. The mananger will not approve the project.
+
+![](http://i.imgur.com/ggvEPmS.jpg?1)

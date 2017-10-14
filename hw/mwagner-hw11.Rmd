@@ -1,0 +1,93 @@
+---
+title: "Homework 11"
+author: "Max Wagner"
+date: "April 14, 2016"
+header-includes:
+   - \usepackage{bbm}
+output:
+  pdf_document: default
+  html_document:
+    highlight: espresso
+    theme: flatly
+  word_document: default
+---
+***
+
+
+##529.1
+
+$$ x = -e^t, y = e^t $$ 
+
+$$ \frac{dx}{dt} = -y, \frac{dy}{dt} = -x $$
+
+$$ \frac{dx}{dt} = -e^t, y = e^t, \frac{dx}{dt} = -y $$ 
+
+$$ \frac{dy}{dt} = e^t, x = -e^t, \frac{dy}{dt} = -x $$
+
+
+##529.6
+
+$\frac{dx}{dt}$ and $\frac{dy}{dt}$ = 0 at (2,1)
+
+Finding other points can be done with $rcos(\theta), rsin(\theta)$ where r is the radius from the stable point (2,1), and theta is the angle from (2,1).
+
+
+##536.7
+
+a.
+
+$$ \frac{dx}{dt} = (a-by)x, \frac{dy}{dt} = (m-nx)y $$
+
+$$ \frac{dy}{dx} = \frac{(m-nx)y}{(a-by)x} $$
+
+b.
+
+integrating gives:
+
+$$ \frac{y(m ln(x) - nx)}{a-by} + K $$
+
+exponetiation gives
+
+$$ y^a e^{-by} = Kx^m e^{-nx} $$
+
+
+##546.1
+
+$$ f(y) = \frac{y^a}{e^{by}} $$
+
+$$ f'(y) = \frac{y^{a-1}(by-a)}{e^{by}} $$
+
+Setting $f'(y) = 0$ gives:
+
+$$ y = a / b $$
+
+This means that the above is a critical point, but we are unsure if its a maxima or minima. Let's take the 2nd derivative.
+
+$$ f''(y) = \frac{y^{a-2}(b^2y^2 - 2aby + a^2 - a)}{e^{by}} $$
+
+We can then substitute y for a / b, but it becomes impossible to assign a maxima or minima without knowing `a` and `b`. The end result is we know we have a critical point at (2,1), but we do not know if it a max or min.
+
+
+## 566.1
+
+Not really sure how to do this at the moment with an immense amount of work. Working on figuring it out...
+
+A potential solution is:
+
+x:
+
+```{r}
+x1 <- matrix(c(1,.985,.97,1,.925,.85), ncol = 2)
+x1
+x2 <- matrix(c(1,.99,.97,1,.95,.9017), ncol = 2)
+x2
+```
+
+y:
+
+```{r}
+y1 <- matrix(c(1,.985,.97,1,.925,.85), ncol = 2)
+y1
+y2 <- matrix(c(1,.99,.98,1,.95,.9013), ncol = 2)
+y2
+```

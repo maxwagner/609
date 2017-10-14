@@ -1,0 +1,89 @@
+---
+title: "Homework 13"
+author: "Max Wagner"
+date: "April 25, 2016"
+header-includes:
+   - \usepackage{bbm}
+output:
+  pdf_document: default
+  html_document:
+    highlight: espresso
+    theme: flatly
+  word_document: default
+---
+***
+
+## b13.4
+
+We would need some sort of information on the actual number of warheads from each participant. We would also need to know if the two participants were on equal footing, meaning that the warheads each side had were equal. If the warheads aren't equal it complicates things significantly.
+
+Realistically we could not make this model because countries would not share this information. We could look at something like budgets, but this could also be untruthful.
+
+## b17.1
+
+a.
+
+```{r}
+graphit <- function(x0,y0,xs,ys,limit) {
+  n <- 0
+  data <- data.frame(x = x0, y = y0, n = n)
+  while (n < limit) {
+    y <- 120 + ys * tail(data$x, 1)
+    x <- 60 + xs * tail(data$y, 1)
+    n <- tail(data$n,1) + 1
+    data <- rbind(data, c(x, y, n))
+  }
+  plot(x=data$n, y=data$x, type = "l", col = "red")
+  par(new=TRUE)
+  plot(x=data$n, y=data$y, type = "l", col="green")
+  print (data)
+}
+
+graphit(100,200,1/3,1/2,25)
+```
+
+b.
+
+There is an eqilibrium reach at x=120 and y=180.
+
+c.
+
+We can try something stupid like 1000,1000 and see it reaches the same eq.
+
+```{r}
+graphit(1000,1000,1/3,1/2,25)
+```
+
+It looks like the same eq is reach fairly quickly.
+
+d.
+
+And now with different coeff...
+
+```{r}
+graphit(1000,1000,1/8,1/12,25)
+graphit(1000,1000,1/1.1,-1/2,25)
+graphit(1000,1000,-1/2,-1/2,25)
+```
+
+There is a problem when the coeff are the same, but it looks like predictable behavior.
+
+## b21.4
+
+$$ TR = f(q) * q $$
+
+$$ MR = f'(q) * q + f(q) $$
+
+## b25.1
+
+If demand is high, price will also be high, so customers will have to pay the tax.
+
+If demand is low, price will be low, so industry will have to eat the tax cost.
+
+If supply is high, demand will drop, as will price, so the industry will need to eat the tax again.
+
+If supply is low, demand will rise, as will price, so customers must pay the tax
+
+## b29.1
+
+The eq quantity could increase if the demand curve doesn't move to the left because supply could change after the crisis, while demand would likely remain the same. 

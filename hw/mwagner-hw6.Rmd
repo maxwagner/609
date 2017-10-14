@@ -96,10 +96,21 @@ The above feasable points give the potential solutions of (0, 5), (0, 8), (2.25,
 
 .
 
+![question6](https://raw.githubusercontent.com/maxwagner/609/master/hw/278.6.jpg)
+
+####284.1
+
+Based on the extreme point and slopes from the example, and the equation from the question we can get the equation below that describes the carpenter's planning:
+
+$$ 20 \leq c_2 \leq 37.5 $$
+
+The gist of the equation means that the carpenter should make 12 tables and 15 bookcases until the profit margin is above or below (20, 37.5). If below, make tables, if above, make bookcases. 
+
+####295.3
+
+. I feel like I'm missing some sort of information to do this problem, I'll work on it or get an answer from someone on how they did it, and try to include with next week's set.
+
 ```{r}
-library(lpSolveAPI)
-x <- make.lp(2, 2)
-y <- x
-set.column(x, 1, c(1, 2))
-set.column(x, 2, c(3, 4))
+x <- c(7,14,21,28,35,42)
+y <- c(8,41,133,250,280,297)
 ```

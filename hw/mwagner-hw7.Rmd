@@ -1,0 +1,95 @@
+---
+title: "Homework 7"
+author: "Max Wagner"
+date: "March 15, 2016"
+header-includes:
+   - \usepackage{bbm}
+output:
+  pdf_document: default
+  html_document:
+    highlight: espresso
+    theme: flatly
+  word_document: default
+---
+***
+
+####304.2
+
+.
+
+a) Not Eulerian because of the odd number of edges at points 2 and 5.
+
+b) Since there are two points with an odd number of edges, it is possible to do the new walk because the overall sum is positive.
+
+####307.1
+
+.
+
+a) ab, bc, cd, de, ef, fa, ae, bd, df
+
+b) ab, bc, bd
+
+c) b and d
+
+d) 3
+
+e) 9
+
+####320.10
+
+.
+
+First let's look at positions that only one person can play:
+
+Deb must play 5, which means she cannot play 3 or 4.
+
+Gladys must play 4, which means she cannot play 3.
+
+Hermione will then play 3, which means she cannot play 2.
+
+Courtney, Ellen, or Alice can play 2.
+
+Alice, Courtney, or Fay can play 1.
+
+Let's say that: Bonnie(1), Alice(2), Hermione(3), Gladys(4), Deb(5).
+
+If Hermione cannot play 3, there is no assignment that will work, as Gladys and Deb cannot fill 3 positions.
+
+####331.1
+
+.
+
+If we consider some reasonable choices...
+
+a-b-d-g-j = 2-2-2-8 = 14
+a-b-d-g-e-h-j = 2-2-2-1-2-4 = 13
+a-b-d-g-e-i-j = 2-2-2-1-3-2 = 12
+
+The final path is the shortest possible from the potential paths.
+
+####331.3
+
+.
+
+1: $$s - x_1 - y_1 - t, flow = 1$$
+2: $$s - x_2 - y_3 - t, flow = 2$$ 
+3: $$s - x_3 - y_1 - t, s - x_1 - y_1 - t, flow = 2$$ 
+4: $$s - x_1 - y_2 - t, flow = 3 $$
+5: $$s - x_4 - y_3 - t, s - x_2 - y_3 - t, flow = 3$$
+6: $$s - x_2 - y_6 - t, flow = 4$$
+
+####338.4
+
+.
+
+We are maximizing $x_{sa} + x_{sb}$, so the constraints are:
+
+$$ x_{sa} \leq 4 , x_{sb} \leq 5 , x_{ab} \leq 3 , x_{ac} \leq 2$$
+$$ x_{bc} \leq 1 , x_{bd} \leq 6 , x_{dc} \leq 2 , x_{ct} \leq 7 , x_{dt} \leq 3 $$
+
+with the following flow balance constraits:
+
+$$ x_{sa} = x_{ab} + x_{ac} $$ 
+$$ x_{sb} + x_{ab} = x_{bc} + x_{bd} $$ 
+$$ x_{ac} + x_{bc} + x_{dc} = x_{ct} $$ 
+$$ x_{bd} = x_{dc} + x_{dt} $$
